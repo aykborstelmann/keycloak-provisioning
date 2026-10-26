@@ -224,6 +224,7 @@
   "adminUrl" : null,
   "alwaysDisplayInConsole" : false,
   "attributes" : {
+    "dpop.bound.access.tokens" : "false",
     "realm_client" : "false"
   },
   "authenticationFlowBindingOverrides" : { },

@@ -64,6 +64,8 @@ dependencies {
     implementation("org.slf4j:slf4j-api:latest.release")
 
     testImplementation(platform("org.testcontainers:testcontainers-bom:latest.release"))
+    // DPoP proofs need a crypto provider on the classpath; the admin client does not bring one.
+    testRuntimeOnly("org.keycloak:keycloak-crypto-default:26.8.1")
     testImplementation("org.junit.jupiter:junit-jupiter-params")
     testImplementation("org.assertj:assertj-core:latest.release")
     testImplementation("org.testcontainers:testcontainers")

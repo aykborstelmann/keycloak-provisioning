@@ -10,7 +10,7 @@ import org.apache.commons.lang3.Validate;
  * convention carries the managed prefix.
  */
 public record KeycloakProvisioningClientConfig(
-    String clientId, String secret, String name, String description) {
+    String clientId, String secret, String name, String description, boolean useDPoP) {
 
   public KeycloakProvisioningClientConfig {
     Validate.notBlank(clientId);
@@ -18,11 +18,25 @@ public record KeycloakProvisioningClientConfig(
     Objects.requireNonNull(name);
   }
 
+  public KeycloakProvisioningClientConfig(
+      String clientId, String secret, String name, String description) {
+    this(clientId, secret, name, description, false);
+  }
+
   public KeycloakProvisioningClientConfig(String clientId, String secret) {
     this(
         clientId,
         secret,
         "keycloak-provisioning-client",
-        "Used for provisioning and managing this keycloak instance.");
+        "Used for provisioning and managing this keycloak instance.",
+        false);
+  }
+
+  /**
+   * Requests DPoP-bound tokens for this connection and registers the client with {@code
+   * dpop.bound.access.tokens=true}, so a stolen token cannot be replayed without its key.
+   */
+  public KeycloakProvisioningClientConfig withDPoP(boolean useDPoP) {
+    return new KeycloakProvisioningClientConfig(clientId, secret, name, description, useDPoP);
   }
 }

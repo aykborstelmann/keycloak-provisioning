@@ -28,7 +28,10 @@ public final class DefaultKeycloakConnectionManager extends KeycloakConnectionMa
     try {
       this.keycloakProvisioningConnectionManager =
           new KeycloakProvisioningConnectionManager(
-              config.serverUrl(), config.provisioningClientConfig(), config.clientNaming());
+              config.serverUrl(),
+              config.provisioningClientConfig(),
+              config.clientNaming(),
+              config.httpClientCustomizer());
       bootstrapProvisioningClient(this.keycloakProvisioningConnectionManager, config);
     } catch (RuntimeException e) {
       close();
@@ -39,11 +42,17 @@ public final class DefaultKeycloakConnectionManager extends KeycloakConnectionMa
           "Failed to connect using provisioning client. Bootstrapping provisioning client using admin-cli client");
       try (KeycloakAdminCliConnectionManager keycloakAdminCliClientManager =
           new KeycloakAdminCliConnectionManager(
-              config.serverUrl(), config.adminCredentialsConfig(), config.clientNaming())) {
+              config.serverUrl(),
+              config.adminCredentialsConfig(),
+              config.clientNaming(),
+              config.httpClientCustomizer())) {
         bootstrapProvisioningClient(keycloakAdminCliClientManager, config);
         this.keycloakProvisioningConnectionManager =
             new KeycloakProvisioningConnectionManager(
-                config.serverUrl(), config.provisioningClientConfig(), config.clientNaming());
+                config.serverUrl(),
+                config.provisioningClientConfig(),
+                config.clientNaming(),
+                config.httpClientCustomizer());
       }
     }
   }
